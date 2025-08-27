@@ -28,11 +28,11 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-app.use("/api/donors", donorRoutes);
-app.use("/api/ngo", ngoRoutes);
-app.use("/api/pickup", requestPickupRoutes);
-app.use("/api/admin", adminRoutes);
-app.get("/api/health", (req, res) => res.json({ status: "ok" }));
+app.use("/donors", donorRoutes);
+app.use("/ngo", ngoRoutes);
+app.use("/pickup", requestPickupRoutes);
+app.use("/admin", adminRoutes);
+app.get("/health", (req, res) => res.json({ status: "ok" }));
 
 
 const PORT = process.env.PORT || 5000;
