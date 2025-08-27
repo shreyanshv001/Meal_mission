@@ -17,7 +17,7 @@ app.use((req, res, next) => {
 });
 app.use(
   cors({
-    origin: "https://meal-mission.vercel.app/", // Your frontend URL
+    origin: "https://meal-mission.vercel.app", // Your frontend URL
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -32,6 +32,8 @@ app.use("/api/donors", donorRoutes);
 app.use("/api/ngo", ngoRoutes);
 app.use("/api/pickup", requestPickupRoutes);
 app.use("/api/admin", adminRoutes);
+app.get("/api/health", (req, res) => res.json({ status: "ok" }));
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
