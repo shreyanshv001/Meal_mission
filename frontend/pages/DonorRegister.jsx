@@ -41,15 +41,20 @@ const App = () => {
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
-    const response = await axios.post(
-      `${import.meta.env.VITE_BASE_URL}/api/donors/verify-otp`,
-      { email, otp }
-    );
-    if (response.status === 200) {
-      setShowSuccess(true);
-      navigate("/donor-dashboard");
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/donors/verify-otp`,
+        { email, otp }
+      );
+      if (response.status === 200) {
+        setShowSuccess(true);
+        navigate("/donor-dashboard");
+      }
+    } catch (error) {
+      setError(error.response?.data?.message || "Invalid OTP");
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-[#141C25] flex flex-col  items-center">
