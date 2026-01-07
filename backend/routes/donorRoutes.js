@@ -39,6 +39,12 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "Email already exists" });
     }
 
+    // Prevent duplicate phone numbers from causing a save error
+    const existingPhone = await Donor.findOne({ phone });
+    if (existingPhone) {
+      return res.status(400).json({ message: "Phone number already exists" });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     //otp
@@ -64,6 +70,13 @@ router.post("/register", async (req, res) => {
       message: "OTP sent to email. Verify to complete registration.",
     });
   } catch (error) {
+    console.error("Error registering donor:", error);
+    // Handle duplicate key errors gracefully as a fallback
+    if (error && error.code === 11000) {
+      const fields = Object.keys(error.keyPattern || {});
+      const field = fields.length ? fields[0] : "field";
+      return res.status(400).json({ message: `${field} already exists` });
+    }
     res.status(500).json({ message: "Error registering donor" });
   }
 });
